@@ -87,7 +87,7 @@ var gameMap = [
 	0, 2, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 5, 0,
 	0, 2, 3, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 0,
 	0, 2, 3, 1, 4, 4, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 0,
-	0, 2, 3, 1, 1, 4, 4, 1, 2, 3, 3, 2, 1, 1, 2, 1, 0, 0, 0, 0,
+	0, 2, 3, 1, 1, 4, 4, 1, 2, 3, 3, 2, 1, 1, 2, 6, 0, 0, 0, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 6, 3, 3, 6, 2, 2, 2, 1, 1, 1, 1, 0,
 	0, 1, 1, 1, 1, 2, 4, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0,
 	0, 1, 1, 1, 1, 2, 4, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0,
@@ -113,6 +113,7 @@ var currentSecond = 0;
 var frameCount = 0;
 var framesLastSecond = 0;
 var lastFrameTime = 0;
+var gameOver = false;
 
 var floorTypes = {
 	solid: 0,
@@ -225,30 +226,34 @@ Character.prototype.processMovement = function(t) {
 	return true;
 };
 
-var newgame = document.getElementById("ng").style.display = "none";
-// newgame.addEventListener('click', newGame);
-// function newGame() {
-// 	if (newgame) {
-// 		drawGame();
-// 	}
-// };
-
+var newgame = document.getElementById("ng");
+newgame.style.visibility = "hidden";;
+newgame.addEventListener('click', newGame);
+function newGame() {
+    location.reload();
+}
+		
 Character.prototype.canMoveTo = function(x, y) {
 	//checks for win box collision
 	console.log(tileTypes[gameMap[toIndex(x , y)]].floor);
 
 	var win = document.getElementById('wol');
 	if(tileTypes[gameMap[toIndex(x , y)]].floor == floorTypes.win) {
-		win.innerText = "You Win"
-		this.canMoveTo = false;
-		newgame.style.display = "visable";
+		win.innerText = "You Win";
+		win.style.color = 'green';
+		win.style.fontSize = 30;
+		// this.canMoveTo = false;
+		gameOver = true;
+		newgame.style.visibility = "visible";
 	}
 
 	var lose = document.getElementById('wol');
 	if(tileTypes[gameMap[toIndex(x , y)]].floor == floorTypes.lose) {
-		lose.innerText = "You Lose";		
-		this.canMoveTo = false; 
-		newgame.style.display = "visable";
+		lose.innerText = "You Lose";
+		lose.style.color = 'red';		
+		// this.canMoveTo = false;
+		gameOver = true;
+		newgame.style.visibility = "visible";
 	}
 
 	if(x < 0 || x >= mapW || y < 0 || y >= mapH) {
@@ -262,27 +267,35 @@ Character.prototype.canMoveTo = function(x, y) {
 };
   
 Character.prototype.canMoveUp = function() {
+	if (gameOver) return false;
 	 return this.canMoveTo(this.tileFrom[0], this.tileFrom[1] - 1); 
 };
 Character.prototype.canMoveDown = function() { 
+	if (gameOver) return false;
 	return this.canMoveTo(this.tileFrom[0], this.tileFrom[1] + 1); 
 };
-Character.prototype.canMoveLeft = function() { 
+Character.prototype.canMoveLeft = function() {
+	if (gameOver) return false; 
 	return this.canMoveTo(this.tileFrom[0] - 1, this.tileFrom[1]); 
 };
-Character.prototype.canMoveRight = function() { 
+Character.prototype.canMoveRight = function() {
+	if (gameOver) return false; 
 	return this.canMoveTo(this.tileFrom[0] + 1, this.tileFrom[1]); 
 };
 Character.prototype.moveLeft = function(t) { 
+	if (gameOver) return false;
 	this.tileTo[0] -= 1; this.timeMoved = t; 
 };
 Character.prototype.moveRight = function(t) { 
+	if (gameOver) return false;
 	this.tileTo[0] += 1; this.timeMoved = t; 
 };
 Character.prototype.moveUp	= function(t) { 
+	if (gameOver) return false;
 	this.tileTo[1] -= 1; this.timeMoved = t; 
 };
 Character.prototype.moveDown = function(t) { 
+	if (gameOver) return false;
 	this.tileTo[1] += 1; this.timeMoved = t; 
 };
 
