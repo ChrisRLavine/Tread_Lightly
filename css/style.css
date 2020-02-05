@@ -1,24 +1,27 @@
 
 #canvas {
-    border: 1px solid grey;
-    ;
+    /* border: 1px solid grey; */
+    transform: translate(50%, 60%);
 }
 body {
     margin: 0px;
-    background: #000000;
+    background: #685b48;
 }
 h1 {
     color: blanchedalmond;
     position: relative;
-    bottom: 135px;
+    width: 146px;
+    left: 478px;
+    bottom: 157px;
 }
 button {
     visibility: visible;
     position: relative;
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 700;
     color: #6b0a79;
     background: #ffe4c400;
     border: 0px;
-    bottom: 162px;
+    left: 475px;
+    bottom: 174px;
 }
